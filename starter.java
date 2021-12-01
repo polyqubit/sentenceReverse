@@ -1,55 +1,41 @@
 import java.util.Scanner;
 
 public class starter {
-	//finds second last occurence of character
-	static int sL(String s, char c, int index) {
-		int check = 0;
-		for(int i=index;i>-1;i--) {
-        	if(s.charAt(i)==c) {check++;}
-			if(check>1) {return i;}
-    	}
-		return s.lastIndexOf(c);
-	}
-	//second...first?
-	static int SF(String s, char c) {
-		int check = 0;
-		for(int i=0;i<s.length();i++) {
-        	if(s.charAt(i)==c) {check++;}
-			if(check>1) {return i;}
-    	}
-		return s.indexOf(c);
-	}
+	static void p(String s) {System.out.print(s);}
 	public static void main(String args[]) {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter a group of words, separated by a space");
-		String inp = sc.nextLine();
-		System.out.println("\n"+inp+"\n");
-		inp = inp.trim();
-		int check = 0;
+		p("Enter a group of words, separated by a space\n");
+		String inp = sc.nextLine().trim();
+		p("\n"+inp+"\n\n");
 		int F = inp.indexOf(" ");
-		int L = inp.lastIndexOf(" ");  //last index of whitespace
-		int SL = sL(inp,' ',L-1); //second to last index
-		int fbm = 0;
-		int pbm = inp.substring(SL+1,L).length(); //previous block measurement
-   		char store = inp.charAt(L+1);
-		String ss = new String(inp);
 		String fin = new String("");
-    	for(int i=0;i<inp.length();i++) {
-        	if(inp.charAt(i)==' ') {check++;}
-    	}
-		for(int i=0;i<check;i++) {
-			fbm = inp.substring(0,F).length();
-			fin = fin + inp.substring(0,fbm);
-			inp = inp.substring(fbm);
-			F = inp.indexOf(" ");
-      		// L = inp.lastIndexOf(" ");
-			// SL = sL(inp,' ',L-1);
-			// pbm = inp.substring(SL+1,L).length;
-      		// System.out.println(L);
-			// String block = inp.substring(L);
-			// inp = inp.substring(0,L) + block;
+		while(true) {
+			if(!inp.contains(" ")) {fin = inp + " " + fin; break;}
+			if(inp.substring(0,F).trim()!=""){fin = inp.substring(0,F).trim() + " " + fin;}
+			inp = inp.substring(F);
+			F = inp.indexOf(" ")+1;
+			p(inp+"-----"+fin+"\n");
 		}
-    	System.out.println(inp);
+		fin = fin.replaceAll("\\s+"," "); //replaces any double spaces
+    	p("\n\n"+fin);
 	}
-	
 }
+/*** Main idea:
+The input is generally structured something like 
+wordA wordB wordC
+1     2     3
+To reverse the word order means reversing their position order, which I did by
+copying each word over to a new string. The program reads the leftmost word in
+the string, and inserts words at the beginning of the string copy. After one
+insertion, the leftmost word is trimmed from the original string and the next
+word is read.
+String      NewString
+"1 2 3"		""
+"2 3"		"1"
+"3"			"2 1"
+"3"			"3 2 1"
+Note that this is not exactly how my program works, due to not wanting to think
+too hard about indices and such. You will find on line 19 a replaceAll call. This
+is to remove any double spaces(such as "2  1") caused by bad programming.
+
+***/
